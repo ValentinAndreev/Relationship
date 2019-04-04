@@ -5,7 +5,7 @@ module Relationship
   class InstallGenerator < Rails::Generators::Base
     include Rails::Generators::Migration
 
-    source_root File.expand_path('templates/migration', 'add_relation.rb')
+    source_root File.expand_path('../../generators/templates', __dir__)
 
     desc 'Generates migration file.'
     def create_migration_file
@@ -31,16 +31,14 @@ module Relationship
 
     desc 'Copy controller model and routes for relationship.'
     def manifest
-      record do |m|
-        # Controller
-        m.file "controllers/relationships_controller.rb", "app/controllers/relationships_controller.rb" 
+      # Controller
+      copy_file "relations_controller.rb", "app/controllers/relations_controller.rb" 
 
-        # Models
-        m.file "models/relationship.rb", "app/models/relationship.rb"
+      # Models
+      copy_file "relation.rb", "app/models/relation.rb"
 
-        # Route
-        m.route "resources :relationships, only: [ :create, :destroy ]"
-      end
+      # Route
+      route "resources :relations, only: [ :create, :destroy ]"
     end
   end
 end
